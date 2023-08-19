@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include "lexer.cpp"
 
 class ExprAST {
 public:
@@ -78,6 +79,21 @@ class FunctionAST {
 public:
     FunctionAST(std::unique_ptr<PrototypeAST> Proto, std::unique_ptr<ExprAST> Body) : Proto(std::move(Proto)), Body(std::move(Body)) {}
 };
+
+/// LogError* - These are little helper functions for error handling.
+std::unique_ptr<ExprAST> LogError(const char *Str) {
+  fprintf(stderr, "Error: %s\n", Str);
+  return nullptr;
+}
+std::unique_ptr<PrototypeAST> LogErrorP(const char *Str) {
+  LogError(Str);
+  return nullptr;
+}
+
+static int CurTok;
+static int getNextToken() {
+    return CurTok = gettok();
+}
 
 int main(){
     auto n = NumberExprAST(0.4);
