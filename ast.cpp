@@ -4,6 +4,9 @@
 class ExprAST {
 public:
     virtual ~ExprAST() = default;
+    std::string Repr(){ //Not as useful as I would like
+        return "Not Implemented";
+    }
 };
 
 /// NumberExprAST - Expression class for numeric literals like "1.0".
@@ -12,8 +15,8 @@ class NumberExprAST : public ExprAST {
 
 public:
     NumberExprAST(double Val) : Val(Val) {}
-    auto Repr(){
-        return Val;
+    std::string Repr(){
+        return std::to_string(Val);
     }
 };
 
@@ -22,7 +25,7 @@ class VariableExprAST : public ExprAST {
 
 public:
     VariableExprAST(const std::string &Name) : Name(Name) {}
-    auto Repr(){
+    std::string Repr(){
         return Name;
     }
 };
@@ -36,6 +39,10 @@ public:
     BinaryExprAST(char Op, std::unique_ptr<ExprAST> LHS,
                     std::unique_ptr<ExprAST> RHS)
         : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+
+    std::string Repr(){
+        return LHS->Repr() + std::string(1, Op) + RHS->Repr();
+    }
 };
 
 /// CallExprAST - Expression class for function calls.
@@ -74,11 +81,10 @@ public:
 
 int main(){
     auto n = NumberExprAST(0.4);
-    auto LHS = VariableExprAST("x");
-    // auto LHS = std::make_unique<VariableExprAST>("x");
-    // auto RHS = std::make_unique<VariableExprAST>("y");
-    // auto Result = std::make_unique<BinaryExprAST>('+', std::move(LHS),
-    //                                           std::move(RHS));
-    std::cout << n.Repr() << " " << LHS.Repr() << "\n";
+    auto LHS = std::make_unique<VariableExprAST>("x");
+    auto RHS = std::make_unique<VariableExprAST>("y");
+    auto Result = std::make_unique<BinaryExprAST>('+', std::move(LHS),
+                                              std::move(RHS));
+    std::cout << n.Repr() << " " << Result->Repr() << "\n";
     return 0;
 }
