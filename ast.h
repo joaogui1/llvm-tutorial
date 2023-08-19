@@ -1,11 +1,10 @@
-#include <utility>
 #include <memory>
 #include <string>
-
+#include <utility>
 
 class ExprAST {
 public:
-    virtual ~ExprAST() = default;
+  virtual ~ExprAST() = default;
 };
 
 /// NumberExprAST - Expression class for numeric literals like "1.0".
@@ -32,7 +31,6 @@ public:
   BinaryExprAST(char Op, std::unique_ptr<ExprAST> LHS,
                 std::unique_ptr<ExprAST> RHS)
       : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
-
 };
 
 /// CallExprAST - Expression class for function calls.
@@ -71,6 +69,6 @@ public:
       : Proto(std::move(Proto)), Body(std::move(Body)) {}
 };
 
-
 static std::unique_ptr<ExprAST> ParseExpression();
-static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec, std::unique_ptr<ExprAST> LHS);
+static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec,
+                                              std::unique_ptr<ExprAST> LHS);
