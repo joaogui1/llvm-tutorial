@@ -1,5 +1,5 @@
-#include <string>
 #include <iostream>
+#include <string>
 
 // The lexer returns tokens [0-255] if it is an unknown character, otherwise one
 // of these for known things.
@@ -18,61 +18,60 @@ enum Token {
 static std::string IdentifierStr; // Filled in if tok_identifier
 static double NumVal;             // Filled in if tok_number
 
-
 /// gettok - Return the next token from standard input.
 static int gettok() {
-    static int LastChar = ' ';
+  static int LastChar = ' ';
 
-    // Skip any whitespace.
-    while (isspace(LastChar))
-        LastChar = getchar();
-    
-    if (isalpha(LastChar)) { // identifier: [a-zA-Z][a-zA-Z0-9]*
-        IdentifierStr = LastChar;
-        while (isalnum((LastChar = getchar())))
-            IdentifierStr += LastChar;
+  // Skip any whitespace.
+  while (isspace(LastChar))
+    LastChar = getchar();
 
-        if (IdentifierStr == "def")
-            return tok_def;
-        if (IdentifierStr == "extern")
-            return tok_extern;
-        return tok_identifier;
+  if (isalpha(LastChar)) { // identifier: [a-zA-Z][a-zA-Z0-9]*
+    IdentifierStr = LastChar;
+    while (isalnum((LastChar = getchar())))
+      IdentifierStr += LastChar;
+
+    if (IdentifierStr == "def")
+      return tok_def;
+    if (IdentifierStr == "extern")
+      return tok_extern;
+    return tok_identifier;
+  }
+
+  if (isdigit(LastChar) || LastChar == '.') { // number: [0-9.]+
+    std::string NumStr;
+    int dots = (LastChar == '.');
+    do {
+      NumStr += LastChar;
+      LastChar = getchar();
+      dots += (LastChar == '.');
+    } while (isdigit(LastChar) || LastChar == '.');
+
+    if (dots > 1) {
+      std::cout << "Invalid number " << NumStr << "\n";
+      exit(1);
     }
 
-    if (isdigit(LastChar) || LastChar == '.') { // number: [0-9.]+
-        std::string NumStr;
-        int dots = (LastChar == '.');
-        do {
-            NumStr += LastChar;
-            LastChar = getchar();
-            dots += (LastChar == '.');
-        } while (isdigit(LastChar) || LastChar == '.');
-        
-        if (dots > 1){
-            std::cout << "Invalid number " << NumStr << "\n";
-            exit(1);
-        }
+    NumVal = strtod(NumStr.c_str(), 0);
+    return tok_number;
+  }
 
-        NumVal = strtod(NumStr.c_str(), 0);
-        return tok_number;
-    }
+  if (LastChar == '#') {
+    // Comment until end of line.
+    do
+      LastChar = getchar();
+    while (LastChar != EOF && LastChar != '\n' && LastChar != '\r');
 
-    if (LastChar == '#') {
-        // Comment until end of line.
-        do
-            LastChar = getchar();
-        while (LastChar != EOF && LastChar != '\n' && LastChar != '\r');
+    if (LastChar != EOF)
+      return gettok();
+  }
 
-        if (LastChar != EOF)
-            return gettok();
-    }
+  // Check for end of file.  Don't eat the EOF.
+  if (LastChar == EOF)
+    return tok_eof;
 
-    // Check for end of file.  Don't eat the EOF.
-    if (LastChar == EOF)
-        return tok_eof;
-
-    // Otherwise, just return the character as its ascii value.
-    int ThisChar = LastChar;
-    LastChar = getchar(); // why?
-    return ThisChar;
+  // Otherwise, just return the character as its ascii value.
+  int ThisChar = LastChar;
+  LastChar = getchar(); // why?
+  return ThisChar;
 }
