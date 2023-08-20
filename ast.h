@@ -18,7 +18,10 @@ using namespace llvm;
 class ExprAST {
 public:
   virtual ~ExprAST() = default;
+<<<<<<< HEAD
   virtual Value *codegen() = 0; 
+=======
+>>>>>>> main
 };
 
 /// NumberExprAST - Expression class for numeric literals like "1.0".
@@ -27,7 +30,10 @@ class NumberExprAST : public ExprAST {
 
 public:
   NumberExprAST(double Val) : Val(Val) {}
+<<<<<<< HEAD
   Value *codegen() override;
+=======
+>>>>>>> main
 };
 
 class VariableExprAST : public ExprAST {
@@ -35,7 +41,10 @@ class VariableExprAST : public ExprAST {
 
 public:
   VariableExprAST(const std::string &Name) : Name(Name) {}
+<<<<<<< HEAD
   Value *codegen() override;
+=======
+>>>>>>> main
 };
 
 /// BinaryExprAST - Expression class for a binary operator.
@@ -47,7 +56,10 @@ public:
   BinaryExprAST(char Op, std::unique_ptr<ExprAST> LHS,
                 std::unique_ptr<ExprAST> RHS)
       : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+<<<<<<< HEAD
   Value *codegen() override;
+=======
+>>>>>>> main
 };
 
 /// CallExprAST - Expression class for function calls.
@@ -59,8 +71,11 @@ public:
   CallExprAST(const std::string &Callee,
               std::vector<std::unique_ptr<ExprAST>> Args)
       : Callee(Callee), Args(std::move(Args)) {}
+<<<<<<< HEAD
   Value *codegen() override;
 
+=======
+>>>>>>> main
 };
 
 /// PrototypeAST - This class represents the "prototype" for a function,
