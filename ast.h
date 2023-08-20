@@ -75,7 +75,8 @@ public:
       : Name(Name), Args(std::move(Args)) {}
 
   const std::string &getName() const { return Name; }
- 
+  Function *codegen();
+
 };
 
 /// FunctionAST - This class represents a function definition itself.
@@ -87,6 +88,7 @@ public:
   FunctionAST(std::unique_ptr<PrototypeAST> Proto,
               std::unique_ptr<ExprAST> Body)
       : Proto(std::move(Proto)), Body(std::move(Body)) {}
+  Function *codegen();
 };
 
 static std::unique_ptr<ExprAST> ParseExpression();

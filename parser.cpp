@@ -21,7 +21,7 @@ std::unique_ptr<PrototypeAST> LogErrorP(const char *Str) {
   return nullptr;
 }
 static std::unique_ptr<LLVMContext> TheContext;
-static std::unique_ptr<IRBuilder<>> Builder(TheContext);
+static std::unique_ptr<IRBuilder<>> Builder;
 static std::unique_ptr<Module> TheModule;
 static std::map<std::string, Value *> NamedValues;
 
@@ -252,7 +252,7 @@ Value *BinaryExprAST::codegen() {
   case '<':
     L = Builder->CreateFCmpULT(L, R, "cmptmp");
     // Convert bool 0/1 to double 0.0 or 1.0
-    return Builder->CreateUIToFP(L, Type::getDoubleTy(TheContext),
+    return Builder->CreateUIToFP(L, Type::getDoubleTy(*TheContext),
                                  "booltmp");
   default:
     return LogErrorV("invalid binary operator");
