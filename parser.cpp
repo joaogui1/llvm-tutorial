@@ -20,7 +20,6 @@ std::unique_ptr<PrototypeAST> LogErrorP(const char *Str) {
   LogError(Str);
   return nullptr;
 }
-<<<<<<< HEAD
 static std::unique_ptr<LLVMContext> TheContext;
 static std::unique_ptr<IRBuilder<>> Builder(TheContext);
 static std::unique_ptr<Module> TheModule;
@@ -30,8 +29,6 @@ Value *LogErrorV(const char *Str) {
   LogError(Str);
   return nullptr;
 }
-=======
->>>>>>> main
 
 static int CurTok;
 static int getNextToken() { return CurTok = gettok(); }
