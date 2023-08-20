@@ -1,13 +1,3 @@
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <string>
-#include <utility>
-#include <vector>
-
 #include "parser.cpp"
 
 //===----------------------------------------------------------------------===//
